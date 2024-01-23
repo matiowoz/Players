@@ -5,82 +5,105 @@ class Program
 {
     static void Main(string[] args)
     {
+        PlayerList playerList = new();
 
-        for (int i = 0; i < 3; i++)
+        while (true)
         {
-            Console.WriteLine("Choose your Nickname: ");
-            string nowyGracz = Console.ReadLine();
-            Gracz gracz = new Gracz(nowyGracz);
-            PlayerList gracz = new PlayerList(nowyGracz);
-            PlayerList.PlayerAdd(gracz.Id, gracz.Nick);
-            Console.WriteLine("");
+            
 
-        }
-        Console.WriteLine("Player List: ");
+            Menu.ShowMenu();
+            var choice = Console.ReadLine();
+            switch (choice)
+            {
+                case "1": // Add player
+                    Console.WriteLine("Choose your Nickname: ");
+                    string nowyGracz = Console.ReadLine();
+                    Gracz gracz = new(nowyGracz);
+                    playerList.PlayerAdd(gracz.Nick, gracz.Id);
+                    Console.WriteLine($"ID: {gracz.Id} - {gracz.Nick}");
+                    break;
 
-        foreach (var pair in Players)
-        {
-            Console.WriteLine($"ID: {pair.Key} - {pair.Value}");
+                case "2": // Player List              
+                    foreach (var pair in playerList.Players)
+                    {
+                        Console.WriteLine($"ID: {pair.Key} - {pair.Value}");
+                    }
+                    break;
+            }
+
+
+
+        if (choice == "0")
+                break;
         }
     }
-}
 
-class Gracz
-{
-
-    public Gracz(string nowyGracz)
+    class Gracz
     {
-        this.nick = nowyGracz;
-        nextID++;
-        id = nextID;
-    }
-    string nick;
-    int id;
-    static int nextID = 0;
+        readonly string nick;
+        readonly int id;
+        static int nextID = 0;
 
-    public Gracz(string nick, int id)
+        public Gracz(string nowyGracz)
         {
-        this.nick = Nick;
-        this.id = Id;
+            this.nick = nowyGracz;
+            nextID++;
+            id = nextID;
+        }
+
+        public Gracz()
+        {
+            this.nick = Nick;
+            this.id = Id;
         }
 
 
-
-    public string Nick
-    {
-        get
+        public string Nick
         {
-            return this.nick;
+            get
+            {
+                return this.nick;
+            }
+        }
+
+        public int Id
+        {
+            get
+            {
+                return this.id;
+            }
         }
     }
 
-    public int Id
+    class PlayerList
     {
-        get
+        private readonly Dictionary<int, string> players = [];
+
+        public Dictionary<int, string> Players
         {
-            return this.id;
+            get
+            {
+                return players;
+            }
+        }
+
+
+        public void PlayerAdd(string nick, int id)
+        {
+            Players.Add(id, nick);
+
         }
     }
-}
 
-class PlayerList
-{
-    private Gracz NickToList;
-    private Gracz IdToList;
-    
-
-    Dictionary<int, string> Players = new Dictionary<int, string>();
-
-    string Nickname;
-    int ID;
-
-    public PlayerAdd(string NickToList, int IdToList)
+    class Menu
     {
-        this.Nickname = NickToList;
-        this.ID = IdToList;
-        
-
-        Players.Add(ID, Nickname);
+        static public void ShowMenu()
+        {
+            Console.WriteLine("Menu: ");
+            Console.WriteLine();
+            Console.WriteLine("1. Add Player");
+            Console.WriteLine("2. Player List");            
+            Console.WriteLine("0. Quit");
+        }
     }
-    
 }
