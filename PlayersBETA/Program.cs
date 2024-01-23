@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Xml.XPath;
 
 class Program
 {
@@ -19,7 +20,7 @@ class Program
                     Console.WriteLine("Choose your Nickname: ");
                     string nowyGracz = Console.ReadLine();
                     Gracz gracz = new(nowyGracz);
-                    playerList.PlayerAdd(gracz.Nick, gracz.Id);
+                    playerList.PlayerAdd(gracz.Nick, gracz.Id, gracz.Experience, gracz.Money);
                     Console.WriteLine($"ID: {gracz.Id} - {gracz.Nick}");
                     break;
 
@@ -43,12 +44,25 @@ class Program
         readonly string nick;
         readonly int id;
         static int nextID = 0;
+        int experience;
+        float money;
 
         public Gracz(string nowyGracz)
         {
             this.nick = nowyGracz;
             nextID++;
             id = nextID;
+            experience = 1;
+            money = 0;
+        }
+
+        public Gracz(string nowyGracz, int xp, float gold)
+        {
+            this.nick = nowyGracz;
+            nextID++;
+            id = nextID;
+            experience = xp;
+            money = gold;
         }
 
         public Gracz()
@@ -60,26 +74,34 @@ class Program
 
         public string Nick
         {
-            get
-            {
-                return this.nick;
-            }
+            get { return this.nick; }
         }
 
         public int Id
         {
-            get
-            {
-                return this.id;
-            }
+            get { return this.id; }
         }
+
+        public int Experience
+        {
+            get {return experience;}
+            set { experience = value;}  
+        }
+
+        public float Money 
+        { 
+            get { return money;}
+            set { money = value;}
+        }
+
+
     }
 
     class PlayerList
     {
-        private readonly Dictionary<int, string> players = [];
+        private readonly Dictionary<int, Gracz> players = [];
 
-        public Dictionary<int, string> Players
+        public Dictionary<int, Gracz> Players
         {
             get
             {
@@ -88,10 +110,9 @@ class Program
         }
 
 
-        public void PlayerAdd(string nick, int id)
+        public void PlayerAdd(string nick, int id,int experience, float money)
         {
-            Players.Add(id, nick);
-
+             Players.Add(id, new Gracz {nick, experience, money}); // nie dziala :(
         }
     }
 
