@@ -15,7 +15,7 @@ class Program
             var choice = Console.ReadLine();
             switch (choice)
             {
-                case "1":
+                case "1": // Add player
                     Console.WriteLine("Choose your Nickname: ");
                     string nowyGracz = Console.ReadLine();
                     Gracz gracz = new(nowyGracz);
@@ -23,7 +23,7 @@ class Program
                     Console.WriteLine($"ID: {gracz.Id} - {gracz.Nick}");
                     break;
 
-                case "2":                    
+                case "2": // Player List              
                     foreach (var pair in playerList.Players)
                     {
                         Console.WriteLine($"ID: {pair.Key} - {pair.Value}");
