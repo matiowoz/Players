@@ -5,20 +5,22 @@ class Program
 {
     static void Main(string[] args)
     {
+        PlayerList playerList = new();
 
         for (int i = 0; i < 3; i++)
         {
             Console.WriteLine("Choose your Nickname: ");
             string nowyGracz = Console.ReadLine();
-            Gracz gracz = new Gracz(nowyGracz);
-            PlayerList gracz = new PlayerList(nowyGracz);
-            PlayerList.PlayerAdd(gracz.Id, gracz.Nick);
-            Console.WriteLine("");
+            Gracz gracz = new (nowyGracz);            
+            playerList.PlayerAdd(gracz.Nick, gracz.Id);
+            
 
         }
+        Console.WriteLine();
         Console.WriteLine("Player List: ");
+        Console.WriteLine();
 
-        foreach (var pair in Players)
+        foreach (var pair in playerList.Players)
         {
             Console.WriteLine($"ID: {pair.Key} - {pair.Value}");
         }
@@ -27,6 +29,9 @@ class Program
 
 class Gracz
 {
+    readonly string nick;
+    readonly int id;
+    static int nextID = 0;
 
     public Gracz(string nowyGracz)
     {
@@ -34,11 +39,8 @@ class Gracz
         nextID++;
         id = nextID;
     }
-    string nick;
-    int id;
-    static int nextID = 0;
-
-    public Gracz(string nick, int id)
+    
+    public Gracz()
         {
         this.nick = Nick;
         this.id = Id;
@@ -65,22 +67,25 @@ class Gracz
 
 class PlayerList
 {
-    private Gracz NickToList;
-    private Gracz IdToList;
-    
+    private Dictionary<int, string> players;
 
-    Dictionary<int, string> Players = new Dictionary<int, string>();
-
-    string Nickname;
-    int ID;
-
-    public PlayerAdd(string NickToList, int IdToList)
+    public Dictionary<int, string> Players
     {
-        this.Nickname = NickToList;
-        this.ID = IdToList;
-        
-
-        Players.Add(ID, Nickname);
+        get
+        {
+            return players;
+        }
     }
+
+    public PlayerList()
+    {
+        players = [];
+    }
+
+    public void PlayerAdd(string nick, int id)
+    {
+        Players.Add(id, nick);
+        
+    }
+}   
     
-}
